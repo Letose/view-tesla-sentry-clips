@@ -5,6 +5,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { MatButtonModule } from '@angular/material/button';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -12,9 +15,12 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     HomePageComponent
   ],
   imports: [
-    BrowserModule,
     AppRoutingModule,
-    NgbModule
+    BrowserAnimationsModule,
+    BrowserModule,
+    MatButtonModule,
+    MatSnackBarModule,
+    NgbModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
