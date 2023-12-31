@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+import { SentryFile } from '../model/sentry-file';
+import { SentrySubFolder } from '../model/sentry-sub-folder';
 
 @Component({
   selector: 'app-home-page',
@@ -9,11 +12,15 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class HomePageComponent {
 
   SENTRY_CLIPS_FOLDER = "SentryClips";
+  LOCAL_STORAGE_KEY = "sentryClipsContent";
   files: File[] = [];
-  sentryClipsContent: Map<String, File[]> = new Map();
+  sentryClipsContent: Map<String, SentryFile[]> = new Map();
   isRight = false;
 
-  constructor(private _snackBar: MatSnackBar) {}
+  constructor(
+    private _snackBar: MatSnackBar,
+    private router: Router,
+  ) {}
 
   onLoad(event: any) {
     this.files = event.target.files;
@@ -23,6 +30,9 @@ export class HomePageComponent {
 
   onClick() {
     this.processFiles(this.files);
+    const sentrySubFolders: SentrySubFolder[] = this.toSentrySubFolders(this.sentryClipsContent);
+    localStorage.setItem(this.LOCAL_STORAGE_KEY, JSON.stringify(sentrySubFolders));
+    this.router.navigate(['/sentry-clips']);
   }
 
   private checkSentryClipsFolder(file: File): boolean {
@@ -31,7 +41,10 @@ export class HomePageComponent {
     }
 
     const filePath = file.webkitRelativePath.split('/');
-    // If the files don't come from SentryCLips, then returns an error
+    /**
+     * If the files don't come from SentryCLips, then returns an error
+     * and displays a message on the screen
+     */
     if (!filePath || filePath.length == 0 || filePath[0] !== this.SENTRY_CLIPS_FOLDER) {
       const errorMessage = `Please give the path of ${this.SENTRY_CLIPS_FOLDER} folder`;
       console.error(errorMessage);
@@ -46,15 +59,17 @@ export class HomePageComponent {
     return true;
   }
 
+  //TODO: prefer building SentrySubFolder[] instead of using a Map
   private processFiles(files: File[]) {
     // For each file from the given folder
     for (const file of files) {
-      this.processFile(file);
+      const sentryFile = new SentryFile(file);
+      this.processFile(sentryFile);
     }
   }
 
-  private processFile(file: File) {
-    const filePath = file.webkitRelativePath.split('/');
+  private processFile(sentryFile: SentryFile) {
+    const filePath = sentryFile.webkitRelativePath.split('/');
 
     // Add a file to the array matching the timestamp, then set it in the map
     const sentryClipsSubFolder = filePath[1];
@@ -63,12 +78,45 @@ export class HomePageComponent {
 
       // If this is not the first file added, then get the content and push the current file within
       if (filesTmp && filesTmp.length > 0) {
-        filesTmp.push(file);
+        filesTmp.push(sentryFile);
       } else {  // Else, add the current file
-        filesTmp = new Array(file);
+        filesTmp = new Array(sentryFile);
       }
-      
+
       this.sentryClipsContent.set(sentryClipsSubFolder, filesTmp);
     }
+  }
+
+  /**
+   * Casts a map into an array of SentrySubFolder objects.
+   * @param map the map
+   * @returns an array of SentrySubFolder objects.
+   */
+  private toSentrySubFolders(map: Map<String, SentryFile[]>): SentrySubFolder[] {
+    let sentrySubFolders: SentrySubFolder[] = [];
+    for (const key of map.keys()) {
+      const sentrySubFolder = this.toSentrySubFolder(key as string, map.get(key));
+      if (sentrySubFolder) {
+        sentrySubFolders.push(sentrySubFolder);
+      }
+    }
+
+    return sentrySubFolders;
+  }
+
+  /**
+   * Casts the parameters into a SentrySubFolder object.
+   * @param key the key
+   * @param value the sentry files
+   * @returns a SentrySubFolder object.
+   */
+  private toSentrySubFolder(key: string, value: SentryFile[] | undefined): SentrySubFolder | null {
+    let sentrySubFolder = null;
+
+    if (value) {
+      sentrySubFolder = new SentrySubFolder(key, value);
+    }
+
+    return sentrySubFolder;
   }
 }

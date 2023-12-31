@@ -1,5 +1,9 @@
 <div class="m-3 d-flex flex-column justify-content-center">
   <label for="formFile" class="form-label">Path to SentryClips folder</label>
   <input class="form-control" id="formFile" type="file" webkitdirectory (input)="onLoad($event)">
-  <button mat-stroked-button class="align-self-center mt-2" (click)="onClick()" [disabled]="!isRight">Next</button>
+  <button mat-stroked-button class="align-self-center mt-2" 
+    (click)="onClick()" 
+    [disabled]="!isRight">
+    Next
+  </button>
 </div>
