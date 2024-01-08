@@ -1,1 +1,46 @@
-<p>sentry-clips works!</p>
+<div class="component-container d-flex flex-column">
+  <div class="sentry-clips-container d-flex flex-wrap">
+    <video id="video-front" controls preload="metadata" *ngIf="sentryClipsVideo[0]">
+      <source [src]="sentryClipsVideo[0]" [type]="sentryClipsType[0]" />
+      Your browser doesn't support HTML video.
+    </video>
+
+    <video id="video-front" controls preload="metadata" *ngIf="sentryClipsVideo[1]">
+      <source [src]="sentryClipsVideo[1]" [type]="sentryClipsType[1]" />
+    </video>
+
+    <video id="video-front" controls preload="metadata" *ngIf="sentryClipsVideo[2]">
+      <source [src]="sentryClipsVideo[2]" [type]="sentryClipsType[2]" />
+    </video>
+
+    <video id="video-front" controls preload="metadata" *ngIf="sentryClipsVideo[3]">
+      <source [src]="sentryClipsVideo[3]" [type]="sentryClipsType[3]" />
+    </video>
+  </div>
+
+  <div class="button-container d-flex justify-content-start align-items-center btn-group" role="group">
+    <!-- Previous sentry clips -->
+    <button type="button" class="btn btn-secondary" aria-label="Previous" 
+      [disabled]="pageIndex === 0"
+      (click)="onClickPrevious()">
+      <mat-icon class="align-self-center">skip_previous</mat-icon>
+    </button>
+
+    <!-- Play/Pause -->
+    <button type="button" class="btn btn-secondary" aria-label="Play/Pause" (click)="onClickPlayPause()">
+      <!-- Switch between play and pause icons each time the button is pressed -->
+      <mat-icon class="align-self-center" *ngIf="displayPlay; else elseBlock">play_arrow</mat-icon>
+
+      <ng-template #elseBlock>
+        <mat-icon class="align-self-center">pause</mat-icon>
+      </ng-template>
+    </button>
+
+    <!-- Next sentryclips -->
+    <button type="button" class="btn btn-secondary" aria-label="Next" 
+      [disabled]="pageIndex > (sentryClipsContent.length - 2)"
+      (click)="onClickNext()">
+      <mat-icon class="align-self-center">skip_next</mat-icon>
+    </button>
+  </div>
+</div>

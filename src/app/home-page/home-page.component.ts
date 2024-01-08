@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { SentryFile } from '../model/sentry-file';
 import { SentrySubFolder } from '../model/sentry-sub-folder';
+import { SentryClipsService } from '../service/sentry-clips.service';
 
 @Component({
   selector: 'app-home-page',
@@ -12,14 +12,14 @@ import { SentrySubFolder } from '../model/sentry-sub-folder';
 export class HomePageComponent {
 
   SENTRY_CLIPS_FOLDER = "SentryClips";
-  LOCAL_STORAGE_KEY = "sentryClipsContent";
   files: File[] = [];
-  sentryClipsContent: Map<String, SentryFile[]> = new Map();
+  sentryClipsContent: Map<String, File[]> = new Map();
   isRight = false;
 
   constructor(
     private _snackBar: MatSnackBar,
     private router: Router,
+    private sentryClipsService: SentryClipsService,
   ) {}
 
   onLoad(event: any) {
@@ -31,7 +31,7 @@ export class HomePageComponent {
   onClick() {
     this.processFiles(this.files);
     const sentrySubFolders: SentrySubFolder[] = this.toSentrySubFolders(this.sentryClipsContent);
-    localStorage.setItem(this.LOCAL_STORAGE_KEY, JSON.stringify(sentrySubFolders));
+    this.sentryClipsService.sentryClipsContent = sentrySubFolders;
     this.router.navigate(['/sentry-clips']);
   }
 
@@ -59,17 +59,15 @@ export class HomePageComponent {
     return true;
   }
 
-  //TODO: prefer building SentrySubFolder[] instead of using a Map
   private processFiles(files: File[]) {
     // For each file from the given folder
     for (const file of files) {
-      const sentryFile = new SentryFile(file);
-      this.processFile(sentryFile);
+      this.processFile(file);
     }
   }
 
-  private processFile(sentryFile: SentryFile) {
-    const filePath = sentryFile.webkitRelativePath.split('/');
+  private processFile(file: File) {
+    const filePath = file.webkitRelativePath.split('/');
 
     // Add a file to the array matching the timestamp, then set it in the map
     const sentryClipsSubFolder = filePath[1];
@@ -78,9 +76,9 @@ export class HomePageComponent {
 
       // If this is not the first file added, then get the content and push the current file within
       if (filesTmp && filesTmp.length > 0) {
-        filesTmp.push(sentryFile);
+        filesTmp.push(file);
       } else {  // Else, add the current file
-        filesTmp = new Array(sentryFile);
+        filesTmp = new Array(file);
       }
 
       this.sentryClipsContent.set(sentryClipsSubFolder, filesTmp);
@@ -92,7 +90,7 @@ export class HomePageComponent {
    * @param map the map
    * @returns an array of SentrySubFolder objects.
    */
-  private toSentrySubFolders(map: Map<String, SentryFile[]>): SentrySubFolder[] {
+  private toSentrySubFolders(map: Map<String, File[]>): SentrySubFolder[] {
     let sentrySubFolders: SentrySubFolder[] = [];
     for (const key of map.keys()) {
       const sentrySubFolder = this.toSentrySubFolder(key as string, map.get(key));
@@ -110,7 +108,7 @@ export class HomePageComponent {
    * @param value the sentry files
    * @returns a SentrySubFolder object.
    */
-  private toSentrySubFolder(key: string, value: SentryFile[] | undefined): SentrySubFolder | null {
+  private toSentrySubFolder(key: string, value?: File[]): SentrySubFolder | null {
     let sentrySubFolder = null;
 
     if (value) {

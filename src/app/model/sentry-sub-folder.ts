@@ -1,12 +1,10 @@
-import { SentryFile } from "./sentry-file";
-
 export class SentrySubFolder {
 
-    timestamp: string;
-    sentryFiles: SentryFile[];
+  timestamp: string;
+  files: File[];
 
-    constructor(timestamp: string, sentryFiles: SentryFile[]) {
-        this.timestamp = timestamp;
-        this.sentryFiles = sentryFiles;
-    }
+  constructor(timestamp: string, files: File[]) {
+    this.timestamp = timestamp;
+    this.files = files;
+  }
 }
