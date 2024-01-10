@@ -46,7 +46,7 @@ export class HomePageComponent {
      * and displays a message on the screen
      */
     if (!filePath || filePath.length == 0 || filePath[0] !== this.SENTRY_CLIPS_FOLDER) {
-      const errorMessage = `Please give the path of ${this.SENTRY_CLIPS_FOLDER} folder`;
+      const errorMessage = $localize `Please select the ${this.SENTRY_CLIPS_FOLDER}:sentry_clips_folder: folder`;
       console.error(errorMessage);
       this._snackBar.open(errorMessage, '', {
         duration: 10_000,

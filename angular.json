@@ -9,6 +9,14 @@
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
+      "i18n": {
+        "sourceLocale": "en-US",
+        "locales": {
+          "fr": {
+            "translation": "src/locale/messages.fr.xlf"
+          }
+        }
+      },
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -54,6 +62,9 @@
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true
+            },
+            "fr": {
+              "localize": ["fr"]
             }
           },
           "defaultConfiguration": "production"
@@ -66,6 +77,9 @@
             },
             "development": {
               "browserTarget": "view-tesla-sentry-clips:build:development"
+            },
+            "fr": {
+              "browserTarget": "view-tesla-sentry-clips:build:development,fr"
             }
           },
           "defaultConfiguration": "development"
@@ -96,7 +110,12 @@
           }
         },
         "deploy": {
-          "builder": "angular-cli-ghpages:deploy"
+          "builder": "angular-cli-ghpages:deploy",
+          "configurations": {
+            "fr": {
+              "browserTarget": "view-tesla-sentry-clips:build:deploy,fr"
+            }
+          }
         }
       }
     }

@@ -1,9 +1,9 @@
 <div class="m-3 d-flex flex-column justify-content-center">
-  <label for="formFile" class="form-label">Path to SentryClips folder</label>
+  <label for="formFile" class="form-label" i18n>Please select the SentryClips folder
+    and click <span style="font-style: italic;">Next</span> button to view the sentry mode clips.</label>
   <input class="form-control" id="formFile" type="file" webkitdirectory (input)="onLoad($event)">
   <button mat-stroked-button class="align-self-center mt-2" 
+    i18n
     (click)="onClick()" 
-    [disabled]="!isRight">
-    Next
-  </button>
+    [disabled]="!isRight">Next</button>
 </div>

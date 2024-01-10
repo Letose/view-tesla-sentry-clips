@@ -18,9 +18,15 @@
     </video>
   </div>
 
-  <div class="button-container d-flex justify-content-start align-items-center btn-group" role="group">
+  <div class="button-container bg-secondary d-flex justify-content-center align-items-center btn-group" role="group">
+    <!-- Back button -->
+    <button type="button" class="btn btn-secondary" aria-label="Back to the Home page"
+      (click)="onClickHome()">
+      <mat-icon>home</mat-icon>
+    </button>
+
     <!-- Previous sentry clips -->
-    <button type="button" class="btn btn-secondary" aria-label="Previous" 
+    <button type="button" class="btn btn-secondary" aria-label="Previous clips" 
       [disabled]="pageIndex === 0"
       (click)="onClickPrevious()">
       <mat-icon class="align-self-center">skip_previous</mat-icon>
@@ -36,8 +42,13 @@
       </ng-template>
     </button>
 
-    <!-- Next sentryclips -->
-    <button type="button" class="btn btn-secondary" aria-label="Next" 
+    <button type="button" class="btn btn-secondary" aria-label="Speed the clip"
+      (click)="onClickSpeedUp()">
+      <mat-icon class="align-self-center">fast_forward</mat-icon>
+    </button>
+
+    <!-- Next sentry clips -->
+    <button type="button" class="btn btn-secondary" aria-label="Next clips" 
       [disabled]="pageIndex > (sentryClipsContent.length - 2)"
       (click)="onClickNext()">
       <mat-icon class="align-self-center">skip_next</mat-icon>

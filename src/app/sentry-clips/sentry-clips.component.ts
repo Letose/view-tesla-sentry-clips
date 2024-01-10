@@ -4,6 +4,7 @@ import { SentryClipsService } from '../service/sentry-clips.service';
 import { ArrayUtilService } from '../utils/array-util.service';
 import { DateUtilService } from '../utils/date-util.service';
 import { Title } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sentry-clips',
@@ -20,6 +21,10 @@ export class SentryClipsComponent implements OnInit {
   sentryClipsType: string[] = new Array(this.positions.length);
   objectUrlArray: string[] = [];
 
+  // Playback rates
+  playbackRates = [1, 2, 4];
+  playbackIndex = 0;
+
   // Used for view rendering
   displayPlay = true;
   pageIndex = 0;
@@ -29,6 +34,7 @@ export class SentryClipsComponent implements OnInit {
     private arrayUtil: ArrayUtilService,
     private dateUtil: DateUtilService,
     private readonly title: Title,
+    private router: Router,
   ) {
     this.sentryClipsContent = this.sentryClipsService.sentryClipsContent;
   }
@@ -144,6 +150,10 @@ export class SentryClipsComponent implements OnInit {
 
   // --------------------------Button actions--------------------------
 
+  onClickHome() {
+    this.router.navigate(['/home']);
+  }
+
   onClickPlayPause() {
     const videoItems = document.querySelectorAll("video");
     
@@ -162,5 +172,14 @@ export class SentryClipsComponent implements OnInit {
   onClickNext() {
     this.cleaning();
     this.processSentryClips(++this.pageIndex);
+  }
+
+  onClickSpeedUp() {
+    const videoItems = document.querySelectorAll("video");
+    this.playbackIndex = ++this.playbackIndex % this.playbackRates.length;
+    
+    videoItems.forEach(video => {
+       video.playbackRate = this.playbackRates[this.playbackIndex];
+    });
   }
 }

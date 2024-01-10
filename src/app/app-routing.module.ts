@@ -6,12 +6,12 @@ import { SentryClipsComponent } from './sentry-clips/sentry-clips.component';
 const routes: Routes = [
   { 
     path: 'home',
-    title: 'Home',
+    title: $localize `Home`,
     component: HomePageComponent
   },
   {
     path: 'sentry-clips',
-    title: 'Sentry clips',
+    title: $localize `Sentry clips`,
     component: SentryClipsComponent
   },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
