@@ -146,6 +146,7 @@ export class SentryClipsComponent implements OnInit {
     this.sentryClipsVideo = [];
     this.sentryClipsType = [];
     this.displayPlay = true;
+    this.playbackIndex = 0;
   }
 
   // --------------------------Button actions--------------------------

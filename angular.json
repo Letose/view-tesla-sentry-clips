@@ -110,12 +110,7 @@
           }
         },
         "deploy": {
-          "builder": "angular-cli-ghpages:deploy",
-          "configurations": {
-            "fr": {
-              "browserTarget": "view-tesla-sentry-clips:build:deploy,fr"
-            }
-          }
+          "builder": "angular-cli-ghpages:deploy"
         }
       }
     }
