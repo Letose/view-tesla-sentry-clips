@@ -149,6 +149,7 @@ export class SentryClipsComponent implements OnInit {
     this.sentryClipsType = [];
     this.displayPlay = true;
     this.playbackIndex = 0;
+    this.currentTimestamp = "";
   }
 
   // --------------------------Button actions--------------------------
