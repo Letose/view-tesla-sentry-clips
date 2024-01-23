@@ -1,24 +1,45 @@
 <div class="component-container d-flex flex-column">
   <div class="sentry-clips-container d-flex flex-wrap">
+    <label id="label-front" for="video-front" 
+      class="badge rounded-pill text-bg-danger position-absolute">
+      Front
+    </label>
     <video id="video-front" controls preload="metadata" *ngIf="sentryClipsVideo[0]">
       <source [src]="sentryClipsVideo[0]" [type]="sentryClipsType[0]" />
       Your browser doesn't support HTML video.
     </video>
 
-    <video id="video-front" controls preload="metadata" *ngIf="sentryClipsVideo[1]">
+    <label id="label-back" for="video-back" 
+      class="badge rounded-pill text-bg-danger position-absolute">
+      Back
+    </label>
+    <video id="video-back" controls preload="metadata" *ngIf="sentryClipsVideo[1]">
       <source [src]="sentryClipsVideo[1]" [type]="sentryClipsType[1]" />
     </video>
 
-    <video id="video-front" controls preload="metadata" *ngIf="sentryClipsVideo[2]">
+    <label id="label-left" for="video-left" 
+      class="badge rounded-pill text-bg-danger position-absolute">
+      Left
+    </label>
+    <video id="video-left" controls preload="metadata" *ngIf="sentryClipsVideo[2]">
       <source [src]="sentryClipsVideo[2]" [type]="sentryClipsType[2]" />
     </video>
 
-    <video id="video-front" controls preload="metadata" *ngIf="sentryClipsVideo[3]">
+    <label id="label-right" for="video-right" 
+      class="badge rounded-pill text-bg-danger position-absolute">
+      Right
+    </label>
+    <video id="video-right" controls preload="metadata" *ngIf="sentryClipsVideo[3]">
       <source [src]="sentryClipsVideo[3]" [type]="sentryClipsType[3]" />
     </video>
   </div>
 
   <div class="button-container bg-secondary d-flex justify-content-center align-items-center btn-group" role="group">
+    <!-- Timestamp information -->
+    <div class="fs-6 pe-5 text-white" *ngIf="currentTimestamp">
+      {{ currentTimestamp }}
+    </div>
+
     <!-- Back button -->
     <button type="button" class="btn btn-secondary" aria-label="Back to the Home page"
       (click)="onClickHome()">

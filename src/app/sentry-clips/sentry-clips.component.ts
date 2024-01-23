@@ -5,6 +5,7 @@ import { ArrayUtilService } from '../utils/array-util.service';
 import { DateUtilService } from '../utils/date-util.service';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import { StringUtilService } from '../utils/string-util.service';
 
 @Component({
   selector: 'app-sentry-clips',
@@ -28,12 +29,13 @@ export class SentryClipsComponent implements OnInit {
   // Used for view rendering
   displayPlay = true;
   pageIndex = 0;
+  currentTimestamp = "";
 
   constructor(
     private sentryClipsService: SentryClipsService,
     private arrayUtil: ArrayUtilService,
     private dateUtil: DateUtilService,
-    private readonly title: Title,
+    private stringUtil: StringUtilService,
     private router: Router,
   ) {
     this.sentryClipsContent = this.sentryClipsService.sentryClipsContent;
@@ -56,7 +58,7 @@ export class SentryClipsComponent implements OnInit {
   }
 
   /**
-   * Checsk the event.json file to find the videos that correspond to 
+   * Checks the event.json file to find the videos that correspond to 
    * the moment when the event occurs.
    */
   private async chooseClipsAccordingToEvent(index: number): Promise<File[]> {
@@ -82,8 +84,8 @@ export class SentryClipsComponent implements OnInit {
         const timestampMax = [...sentryClipsTimestampMap.keys()].reduce((a, b) => Math.max(a, b), -Infinity);
 
         const sentryClipsMax = sentryClipsTimestampMap.get(timestampMax);
-        if (sentryClipsMax) {
-          this.title.setTitle(sentryClipsMax.fileName);
+        if (sentryClipsMax && !this.stringUtil.isEmpty(sentryClipsMax.fileName)) {
+          this.currentTimestamp = this.dateUtil.parseFrontendTimestamp(sentryClipsMax.fileName);
           return sentryClipsMax.files;
         }
       }

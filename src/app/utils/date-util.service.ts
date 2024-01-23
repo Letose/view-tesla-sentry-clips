@@ -14,12 +14,24 @@ export class DateUtilService {
    * @returns the number of milliseconds between that date and midnight, January 1, 1970.
    */
   parseTimestamp(timestamp: string): number {
-    // Regex for all dashes after 'T'
-    const regex = /(?<=T.*)-/g;
-    const timestampParsed = timestamp
-      .replace('_', 'T')
-      .replace(regex, ':');
+    const timestampParsed = this.parseTimestampToString(timestamp);
     
     return Date.parse(timestampParsed);    
+  }
+
+  parseTimestampToString(timestamp: string): string {
+    // Regex for all dashes after 'T'
+    const regex = /(?<=T.*)-/g;
+    return timestamp
+      .replace('_', 'T')
+      .replace(regex, ':');
+  }
+
+  parseFrontendTimestamp(timestamp: string): string {
+    // Regex for all dashes after '_'
+    const regex = /(?<=_.*)-/g;
+    return timestamp
+      .replace(regex, ':')
+      .replace('_', ' ');
   }
 }

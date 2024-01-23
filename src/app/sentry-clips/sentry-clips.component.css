@@ -8,6 +8,26 @@
   height: 92%;
 }
 
+#label-front {
+  top: 1%;
+  left: 1%;
+}
+
+#label-back {
+  top: 1%;
+  left: 51%;
+}
+
+#label-left {
+  top: 47%;
+  left: 1%;
+}
+
+#label-right {
+  top: 47%;
+  left: 51%;
+}
+
 .button-container {
   width: 100%;
   height: 100%;
